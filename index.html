@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Formulario Médico</title>
+  <link rel="stylesheet" href="estilo.css" />
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <script src="validacion.js"></script>
+  <style>
+    .form-section { display: none; }
+    .error { color: red; font-size: 0.9em; }
+  </style>
+</head>
+<body>
+  <form id="formulario-medico" action="guardar_datos.php" method="POST" enctype="multipart/form-data">
+    <h2>Formulario Médico</h2>
+
+    <label>Plan contratado:
+      <select name="plan_contratado" id="plan_contratado" required>
+        <option value="" disabled selected>Seleccione un plan</option>
+        <option value="Gratuito">Gratuito</option>
+        <option value="Mejorado">Mejorado</option>
+      </select>
+      <div class="error"></div>
+    </label>
+
+    <!-- Sección Plan Gratuito -->
+    <div id="gratuito-fields" class="form-section">
+      <h3>Plan Gratuito</h3>
+      <label>Nombre:
+    <input type="text" name="nombre" id="nombre" required />
+    <div class="error"></div>
+  </label>
+      <label>Apellido Paterno:
+    <input type="text" name="apellido_paterno" id="apellido_paterno" required />
+    <div class="error"></div>
+  </label>
+   <label>Apellido Materno:
+    <input type="text" name="apellido_materno" id="apellido_materno" required />
+    <div class="error"></div>
+  </label>
+  <label>Especialidad / Clasificación:
+        <select name="especialidad" id="especialidad" required>
+          <option value="" disabled selected>Seleccione especialidad</option>
+          <option value="Alergología">Alergología</option>
+          <option value="Anestesiología">Anestesiología</option>
+          <option value="Cardiología">Cardiología</option>
+          <option value="Cirugía General">Cirugía General</option>
+          <option value="Dermatología">Dermatología</option>
+          <option value="Endocrinología">Endocrinología</option>
+          <option value="Gastroenterología">Gastroenterología</option>
+          <option value="Geriatría">Geriatría</option>
+          <option value="Ginecología y Obstetricia">Ginecología y Obstetricia</option>
+          <option value="Hematología">Hematología</option>
+          <option value="Infectología">Infectología</option>
+          <option value="Medicina General">Medicina General</option>
+          <option value="Medicina Interna">Medicina Interna</option>
+          <option value="Nefrología">Nefrología</option>
+          <option value="Neumología">Neumología</option>
+          <option value="Neurología">Neurología</option>
+          <option value="Nutriología">Nutriología</option>
+          <option value="Oftalmología">Oftalmología</option>
+          <option value="Oncología">Oncología</option>
+          <option value="Ortopedia">Ortopedia</option>
+          <option value="Otorrinolaringología">Otorrinolaringología</option>
+          <option value="Pediatría">Pediatría</option>
+          <option value="Psiquiatría">Psiquiatría</option>
+          <option value="Reumatología">Reumatología</option>
+          <option value="Traumatología">Traumatología</option>
+          <option value="Urología">Urología</option>
+          <option value="Otra">Otra</option>
+        </select>
+        <div class="error"></div>
+      </label>
+      <div id="especialidad-otro-div" style="display:none;">
+        <label>Otra especialidad:
+          <input type="text" id="especialidad-otro" name="especialidad_otro" />
+          <div class="error"></div>
+        </label>
+      </div>
+    <label>Correo Electrónico:
+  <div style="display: flex;">
+    <input type="text" id="nombre_usuario" placeholder="usuario" required style="flex:1;">
+    <select id="dominio" required>
+      <option value="">@dominio.com</option>
+      <option value="@gmail.com">@gmail.com</option>
+      <option value="@hotmail.com">@hotmail.com</option>
+      <option value="@outlook.com">@outlook.com</option>
+      <option value="@yahoo.com">@yahoo.com</option>
+    </select>
+  </div>
+  <div class="error"></div>
+</label>
+      
+    <label>Teléfono WhatsApp (10 dígitos):
+  <input type="tel" name="telefono_mensajes" 
+         pattern="[0-9]{10}" 
+         maxlength="10"
+         required 
+         placeholder="Ej: 5523456789"
+         oninput="this.value = this.value.replace(/[^0-9]/g,'');" />
+  <div class="error"></div>
+</label>
+ <label>Estado:
+  <input type="text" name="estado" value="Aguascalientes" readonly>
+</label>
+<label>Municipio:
+  <select name="municipio" required>
+    <option value="Aguascalientes">Aguascalientes</option>
+    <option value="Asientos">Asientos</option>
+    <option value="Calvillo">Calvillo</option>
+    <option value="Cosío">Cosío</option>
+    <option value="Jesús María">Jesús María</option>
+    <option value="Pabellón de Arteaga">Pabellón de Arteaga</option>
+    <option value="Rincón de Romos">Rincón de Romos</option>
+    <option value="San Francisco de los Romo">San Francisco de los Romo</option>
+    <option value="San José de Gracia">San José de Gracia</option>
+    <option value="Tepezalá">Tepezalá</option>
+    <option value="El Llano">El Llano</option>
+  </select>
+  <div class="error"></div>
+</label>
+      <label>Código Postal:
+  <input type="text" name="cp" id="cp" required maxlength="5" />
+  <div class="error"></div>
+</label>
+
+<label>Fraccionamiento o Colonia:
+  <select name="fraccionamiento" id="fraccionamiento" required>
+    <option value="" disabled selected>Seleccione un fraccionamiento</option>
+  </select>
+  <div class="error"></div>
+</label>
+
+<div id="fraccionamiento-otro-div" style="display: none;">
+  <label>Otro fraccionamiento:
+    <input type="text" id="fraccionamiento-otro" name="fraccionamiento_otro" />
+  </label>
+</div>
+<div class="form-group">
+  <label for="calle">Calle:
+    <input type="text" name="calle" id="calle" placeholder="Ej. Avenida Reforma" required />
+    <div class="error"></div>
+  </label>
+</div>
+
+<div class="form-inline">
+  <label for="numero_exterior">Número Exterior:
+    <input type="text" name="numero_exterior" id="numero_exterior" placeholder="Ej. 123" required pattern="\d+" title="Solo números" />
+    <div class="error"></div>
+  </label>
+
+  <label for="numero_interior">Número Interior:
+    <input type="text" name="numero_interior" id="numero_interior" placeholder="Ej. 4B" />
+    <div class="error"></div>
+  </label>
+</div>
+
+
+      <label for="cedula_profesional">
+  Número de Cédula Profesional:
+  <input type="text" name="cedula_profesional" id="cedula_profesional"
+         placeholder="Ej. 1234567" required />
+  <div class="error"></div>
+</label>
+
+<label for="tipo_personas">
+  Tipo de pacientes que atiende:
+  <select name="tipo_personas" id="tipo_personas" required>
+    <option value="">Seleccione una opción</option>
+    <option value="adultos">Adultos</option>
+    <option value="niños">Niños</option>
+    <option value="adultos_mayores">Adultos mayores</option>
+    <option value="todos">Todos los anteriores</option>
+  </select>
+  <div class="error"></div>
+</label>
+
+<label for="servicios_principales">
+  Servicios principales o especialidad:
+  <textarea name="servicios_principales" id="servicios_principales"
+            placeholder="Ej. Terapia psicológica, neurología, medicina general, etc."
+            rows="4" required></textarea>
+  <div class="error"></div>
+</label>
+      <label>Imagen de Perfil:
+        <input type="file" name="imagen_perfil_gratuito" accept="image/*" required />
+      </label>
+    </div>
+
+    <!-- Sección Plan Mejorado -->
+    <div id="mejorado-fields" class="form-section">
+      <h3>Plan Mejorado</h3>
+     <label>Nombre:
+    <input type="text" name="nombre" id="nombre" required />
+    <div class="error"></div>
+  </label>
+     <label>Apellido Paterno:
+    <input type="text" name="apellido_paterno" id="apellido_paterno" required />
+    <div class="error"></div>
+  </label>
+     <label>Apellido Materno:
+    <input type="text" name="apellido_materno" id="apellido_materno" required />
+    <div class="error"></div>
+  </label>
+       <label>Especialidad / Clasificación:
+        <select name="especialidad" id="especialidad" required>
+          <option value="" disabled selected>Seleccione especialidad</option>
+          <option value="Alergología">Alergología</option>
+          <option value="Anestesiología">Anestesiología</option>
+          <option value="Cardiología">Cardiología</option>
+          <option value="Cirugía General">Cirugía General</option>
+          <option value="Dermatología">Dermatología</option>
+          <option value="Endocrinología">Endocrinología</option>
+          <option value="Gastroenterología">Gastroenterología</option>
+          <option value="Geriatría">Geriatría</option>
+          <option value="Ginecología y Obstetricia">Ginecología y Obstetricia</option>
+          <option value="Hematología">Hematología</option>
+          <option value="Infectología">Infectología</option>
+          <option value="Medicina General">Medicina General</option>
+          <option value="Medicina Interna">Medicina Interna</option>
+          <option value="Nefrología">Nefrología</option>
+          <option value="Neumología">Neumología</option>
+          <option value="Neurología">Neurología</option>
+          <option value="Nutriología">Nutriología</option>
+          <option value="Oftalmología">Oftalmología</option>
+          <option value="Oncología">Oncología</option>
+          <option value="Ortopedia">Ortopedia</option>
+          <option value="Otorrinolaringología">Otorrinolaringología</option>
+          <option value="Pediatría">Pediatría</option>
+          <option value="Psiquiatría">Psiquiatría</option>
+          <option value="Reumatología">Reumatología</option>
+          <option value="Traumatología">Traumatología</option>
+          <option value="Urología">Urología</option>
+          <option value="Otra">Otra</option>
+        </select>
+        <div class="error"></div>
+      </label>
+      <div id="especialidad-otro-div" style="display:none;">
+        <label>Otra especialidad:
+          <input type="text" id="especialidad-otro" name="especialidad_otro" />
+          <div class="error"></div>
+        </label>
+      </div>
+      <label>Correo Electrónico:
+  <div style="display: flex;">
+    <input type="text" id="nombre_usuario" placeholder="usuario" required style="flex:1;">
+    <select id="dominio" required>
+      <option value="">@dominio.com</option>
+      <option value="@gmail.com">@gmail.com</option>
+      <option value="@hotmail.com">@hotmail.com</option>
+      <option value="@outlook.com">@outlook.com</option>
+      <option value="@yahoo.com">@yahoo.com</option>
+    </select>
+  </div>
+  <div class="error"></div>
+</label>
+       <label>Teléfono WhatsApp (10 dígitos):
+  <input type="tel" name="telefono_mensajes" 
+         pattern="[0-9]{10}" 
+         maxlength="10"
+         required 
+         placeholder="Ej: 5523456789"
+         oninput="this.value = this.value.replace(/[^0-9]/g,'');" />
+  <div class="error"></div>
+</label>
+     <label>Estado:
+  <input type="text" name="estado" value="Aguascalientes" readonly>
+</label>
+<label>Municipio:
+  <select name="municipio" required>
+    <option value="Aguascalientes">Aguascalientes</option>
+    <option value="Asientos">Asientos</option>
+    <option value="Calvillo">Calvillo</option>
+    <option value="Cosío">Cosío</option>
+    <option value="Jesús María">Jesús María</option>
+    <option value="Pabellón de Arteaga">Pabellón de Arteaga</option>
+    <option value="Rincón de Romos">Rincón de Romos</option>
+    <option value="San Francisco de los Romo">San Francisco de los Romo</option>
+    <option value="San José de Gracia">San José de Gracia</option>
+    <option value="Tepezalá">Tepezalá</option>
+    <option value="El Llano">El Llano</option>
+  </select>
+  <div class="error"></div>
+</label>
+      <label>Código Postal:
+  <input type="text" name="cp" id="cp" required maxlength="5" />
+  <div class="error"></div>
+</label>
+
+<label>Fraccionamiento o Colonia:
+  <select name="fraccionamiento" id="fraccionamiento" required>
+    <option value="" disabled selected>Seleccione un fraccionamiento</option>
+  </select>
+  <div class="error"></div>
+</label>
+
+<div id="fraccionamiento-otro-div" style="display: none;">
+  <label>Otro fraccionamiento:
+    <input type="text" id="fraccionamiento-otro" name="fraccionamiento_otro" />
+  </label>
+</div>
+
+ <div class="form-group">
+  <label for="calle">Calle:
+    <input type="text" name="calle" id="calle" placeholder="Ej. Avenida Reforma" required />
+    <div class="error"></div>
+  </label>
+</div>
+
+<div class="form-inline">
+  <label for="numero_exterior">Número Exterior:
+    <input type="text" name="numero_exterior" id="numero_exterior" placeholder="Ej. 123" required pattern="\d+" title="Solo números" />
+    <div class="error"></div>
+  </label>
+
+  <label for="numero_interior">Número Interior:
+    <input type="text" name="numero_interior" id="numero_interior" placeholder="Ej. 4B" />
+    <div class="error"></div>
+  </label>
+</div>
+<legend>Otros Datos Profesionales</legend>
+    <label>Cédula Profesional:
+      <input type="text" name="cedula_profesional" required />
+    </label>
+    <label>Tipo de personas que atiende:
+      <input type="text" name="tipo_personas" required />
+    </label>
+    <label>Servicios principales / especialista en:
+      <textarea name="servicios_principales" rows="3" required></textarea>
+    </label>
+  </fieldset>
+
+  <fieldset>
+    <legend class="text-lg font-semibold mb-2">Horario y Plan</legend>
+
+  <div class="mb-4">
+    <label for="fecha_consulta" class="block text-sm font-medium text-gray-700">Fecha de Consulta:</label>
+    <input type="date" id="fecha_consulta" name="fecha_consulta" required
+           class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+      <label for="hora_inicio" class="block text-sm font-medium text-gray-700">Hora Inicio:</label>
+      <input type="time" id="hora_inicio" name="hora_inicio" required
+             class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+    </div>
+    <div>
+      <label for="hora_fin" class="block text-sm font-medium text-gray-700">Hora Fin:</label>
+      <input type="time" id="hora_fin" name="hora_fin" required
+             class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+    </div>
+  </div>
+
+    <h3>Plan Contratado</h3>
+    <label><input type="radio" name="plan_detalle" value="estandar" required> Estándar</label>
+    <label><input type="radio" name="plan_detalle" value="optimo"> Óptimo</label>
+    <label><input type="radio" name="plan_detalle" value="agenda"> Agenda</label>
+    <label><input type="radio" name="plan_detalle" value="expediente"> Expediente</label>
+    <label><input type="radio" name="plan_detalle" value="recetas"> Recetas</label>
+
+    <label>Descuento precio asesor:
+      <input type="number" name="descuento_asesor">
+    </label>
+  </fieldset>
+
+  <fieldset>
+    <legend>Medios de Pago y Redes</legend>
+      <div class="flex flex-col sm:flex-row sm:flex-wrap gap-2">
+    <label class="inline-flex items-center space-x-2">
+      <input type="checkbox" name="pago[]" value="tarjeta" class="accent-indigo-600">
+      <span>Tarjeta</span>
+    </label>
+    <label class="inline-flex items-center space-x-2">
+      <input type="checkbox" name="pago[]" value="transferencia" class="accent-indigo-600">
+      <span>Transferencia</span>
+    </label>
+    <label class="inline-flex items-center space-x-2">
+      <input type="checkbox" name="pago[]" value="cheque" class="accent-indigo-600">
+      <span>Cheque</span>
+    </label>
+    <label class="inline-flex items-center space-x-2">
+      <input type="checkbox" name="pago[]" value="efectivo" class="accent-indigo-600">
+      <span>Efectivo</span>
+    </label>
+  </div>
+  <legend class="text-lg font-semibold mb-2">Redes Sociales y Presencia en Línea</legend>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+    <div>
+      <label for="facebook" class="block text-sm font-medium text-gray-700">Página Facebook:</label>
+      <input type="text" id="facebook" name="facebook"
+             placeholder="https://facebook.com/tuPerfil"
+             class="mt-1 w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+    </div>
+    <div>
+      <label for="web" class="block text-sm font-medium text-gray-700">Sitio web:</label>
+      <input type="text" id="web" name="web"
+             placeholder="https://tusitio.com"
+             class="mt-1 w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+    </div>
+  </div>
+
+  <div class="flex flex-col sm:flex-row sm:gap-6">
+    <label class="inline-flex items-center space-x-2">
+      <input type="checkbox" name="google_business" value="si" class="accent-indigo-600">
+      <span>Administra Google My Business</span>
+    </label>
+    <label class="inline-flex items-center space-x-2 mt-2 sm:mt-0">
+      <input type="checkbox" name="url_perfil" value="si" class="accent-indigo-600">
+      <span>URL perfil en agsmedico.com</span>
+    </label>
+  </div>
+</fieldset>
+      
+<label for="tipo_personas">
+  Tipo de pacientes que atiende:
+  <select name="tipo_personas" id="tipo_personas" required>
+    <option value="">Seleccione una opción</option>
+    <option value="adultos">Adultos</option>
+    <option value="niños">Niños</option>
+    <option value="adultos_mayores">Adultos mayores</option>
+    <option value="todos">Todos los anteriores</option>
+  </select>
+  <div class="error"></div>
+</label>
+ <div class="mb-2">
+    <label for="firma_mejorado_canvas" class="block text-sm font-medium text-gray-700 mb-1">
+      Firma Digital (Canvas):
+    </label>
+    <canvas id="firma_mejorado_canvas" width="300" height="100"
+            class="border border-gray-400 rounded-md shadow-sm bg-white"></canvas>
+    <input type="hidden" name="firma_mejorado_data" id="firma_mejorado_data" />
+  </div>
+
+  <button type="button"
+          class="mt-2 px-4 py-2 bg-red-500 text-white text-sm rounded hover:bg-red-600 transition"
+          onclick="limpiarFirma('firma_mejorado_canvas')">
+    Limpiar Firma
+  </button>
+    </div>
+
+    <button type="submit">Enviar</button>
+  </form>
+<script>
+  // Validar nombres y apellidos para que solo acepten letras y espacios
+  function soloLetras(input) {
+    input.value = input.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
+  }
+
+  // Validar teléfono para que solo acepte números
+  function soloNumeros(input) {
+    input.value = input.value.replace(/[^0-9]/g, '');
+  }
+
+  // Asignar eventos
+  document.getElementById('nombre').addEventListener('input', function() { soloLetras(this); });
+  document.getElementById('apellido_paterno').addEventListener('input', function() { soloLetras(this); });
+  document.getElementById('apellido_materno').addEventListener('input', function() { soloLetras(this); });
+  document.getElementById('telefono_mensajes').addEventListener('input', function() { soloNumeros(this); });
+</script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const planSelect = document.getElementById('plan_contratado');
+      const gratuitoFields = document.getElementById('gratuito-fields');
+      const mejoradoFields = document.getElementById('mejorado-fields');
+
+      function togglePlanFields() {
+        const plan = planSelect.value;
+        gratuitoFields.style.display = (plan === 'Gratuito') ? 'block' : 'none';
+        mejoradoFields.style.display = (plan === 'Mejorado') ? 'block' : 'none';
+      }
+
+      planSelect.addEventListener('change', togglePlanFields);
+      togglePlanFields();
+
+      // Mostrar campo "Otra especialidad"
+      const especialidadSelect = document.querySelector('select[name="especialidad_mejorado"]');
+      const otroDiv = document.getElementById('especialidad-otro-div-mejorado');
+      if (especialidadSelect) {
+        especialidadSelect.addEventListener('change', () => {
+          otroDiv.style.display = especialidadSelect.value === 'Otra' ? 'block' : 'none';
+        });
+      }
+
+      // Firma canvas
+      const canvas = document.getElementById('firma_mejorado_canvas');
+      const ctx = canvas.getContext('2d');
+      let isDrawing = false;
+
+      canvas.addEventListener('mousedown', () => { isDrawing = true; });
+      canvas.addEventListener('mouseup', () => { 
+        isDrawing = false; 
+        document.getElementById('firma_mejorado_data').value = canvas.toDataURL();
+      });
+      canvas.addEventListener('mousemove', draw);
+      function draw(e) {
+        if (!isDrawing) return;
+        const rect = canvas.getBoundingClientRect();
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = '#000';
+        ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+      }
+
+      // Limpiar firma
+      document.querySelectorAll('.clear-signature').forEach(button => {
+        button.addEventListener('click', () => {
+          const canvasId = button.dataset.canvas;
+          const canvas = document.getElementById(canvasId);
+          const ctx = canvas.getContext('2d');
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.beginPath();
+          const hiddenInput = document.getElementById(canvasId.replace('_canvas', '_data'));
+          if (hiddenInput) hiddenInput.value = '';
+        });
+      });
+
+      // Validación simple
+      document.getElementById('formulario-medico').addEventListener('submit', (e) => {
+        const plan = planSelect.value;
+        const visibleFields = plan === 'Gratuito' ? gratuitoFields : mejoradoFields;
+        const requiredFields = visibleFields.querySelectorAll('[required]');
+        let valid = true;
+
+        requiredFields.forEach(field => {
+          if (!field.value.trim()) {
+            field.style.borderColor = 'red';
+            valid = false;
+          } else {
+            field.style.borderColor = '';
+          }
+        });
+
+        if (!valid) {
+          e.preventDefault();
+          alert('Por favor, complete todos los campos obligatorios.');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
